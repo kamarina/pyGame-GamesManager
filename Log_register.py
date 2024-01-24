@@ -23,29 +23,10 @@ def main():
         choice = input("Would you like to log in(1) or register user(2)? ")
         if choice == "1":
             log_in()
-            return choice
         elif choice == "2":
             register_user()
-            return choice
         else:
             raise ValueError("Invalid choice. Please, enter '1' or '2'. ")
-
-
-""" Register new user """
-
-
-def register_user():
-    print("\n\33[1mREGISTER USER\33[0m")
-    new_username = input("New username:")
-    new_password = input("New password: ")
-    confirm_password = confirm(new_password)
-
-    if confirm_password == new_password:
-        print("New user added! ")
-        username_password[new_username] = new_password
-
-        with open("user.txt", "a") as out_file:
-            out_file.write(f"{new_username};{new_password}\n")
 
 
 """Log in"""
@@ -64,6 +45,29 @@ def log_in():
             logged_in = True
         else:
             print("Login Failed! Try again.")
+
+
+""" Register new user """
+
+
+def register_user():
+    global username_password
+    print("\n\33[1mREGISTER USER\33[0m")
+    new_username = input("New username:")
+
+    while new_username in username_password.keys():
+        print("User already exists. Please enter a different user name.")
+        new_username = input("New username:")
+
+    new_password = input("New password: ")
+    confirm_password = confirm(new_password)
+
+    if confirm_password == new_password:
+        print("New user added! ")
+        username_password[new_username] = new_password
+
+        with open("user.txt", "a") as out_file:
+            out_file.write(f"{new_username};{new_password}\n")
 
 
 action = main()
